@@ -25,10 +25,10 @@ public class SaleRecords {
                 String line = fileScanner.nextLine();
                 String[] columns = line.split(","); // Splits each column by the comma and puts it into an array
                 String date = columns[0];
-                String product = columns[1]; // Assigns the value of each index 1 to the product variable
-                int quantitySold = Integer.parseInt(columns[2]); // Assigns the value of each index 2 to the quantitySold variable
-                BigDecimal salePrice = new BigDecimal(columns[3]); // Assigns the value of each index 3 to the salePrice variable
-                Transaction transaction = new Transaction(date, product, quantitySold, salePrice);
+                String product = columns[1];
+                int quantitySold = Integer.parseInt(columns[2]);
+                BigDecimal salePrice = new BigDecimal(columns[3]);
+                Transaction transaction = new Transaction(date, product, quantitySold, salePrice); // Creates new transaction for each line of data
                 allTransactions.add(transaction);
                 }
             // Print each line of data (now Transaction objects) to console
