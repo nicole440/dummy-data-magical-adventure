@@ -1,6 +1,5 @@
 import model.Transaction;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -13,6 +12,8 @@ public class SaleRecordsTest {
     private static final Transaction TEST_TRANSACTION_2 = new Transaction("2022-01-02", "Pants", 5, BigDecimal.valueOf(25.00));
     private static final Transaction TEST_TRANSACTION_3 = new Transaction("2022-01-03", "Shoes", 3, BigDecimal.valueOf(50.00));
     private static final Transaction TEST_TRANSACTION_4 = new Transaction("2022-01-11", "Shoes", 9, BigDecimal.valueOf(50.00));
+
+    // TODO write test for parseData method
 
     @Test
     public void getTotalRevenue_returns_sum_of_quantity_times_price_for_each_transaction() {

@@ -13,10 +13,10 @@ public class SaleRecords {
         SaleRecords records = new SaleRecords();
         records.parseData();
         records.getTotalRevenue(allTransactions);
+        records.getMostPopularProduct(allTransactions);
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
-
         String dataSet = "dataset.csv";
         File fileName = new File(dataSet);
         try (Scanner fileScanner = new Scanner(fileName)) {
@@ -51,16 +51,26 @@ public class SaleRecords {
 
     // Question 2: What was the most commonly sold product?
     public String getMostPopularProduct(List<Transaction> allTransactions) {
-        String mostPopularProduct = "";
-        int counter = 0;
-        Map<String, Integer> productsMap = new HashMap<>();
+        Map<String, Integer> productCountMap = new HashMap<>();
         for (Transaction transaction : allTransactions) {
-            productsMap.put(transaction.getProduct(), transaction.getQuantitySold());
+            String product = transaction.getProduct();
+            int count = productCountMap.getOrDefault(product, 0);
+            productCountMap.put(product, count + 1);
         }
-
+        String mostPopularProduct = "";
+        int highestCount = 0;
+        for (Map.Entry<String, Integer> entry : productCountMap.entrySet()) {
+            String product = entry.getKey();
+            int count = entry.getValue();
+            if (count > highestCount) {
+                mostPopularProduct = product;
+                highestCount = count;
+            }
+        }
         return mostPopularProduct;
     }
 
+    // TODO finish this method
     // Question 3: What was the average sale price for each product?
     public BigDecimal getAverageSalePrice(List<Transaction> allTransactions){
         return null;
