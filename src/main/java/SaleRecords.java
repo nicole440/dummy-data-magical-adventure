@@ -3,6 +3,7 @@ import model.Transaction;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 
 public class SaleRecords {
@@ -14,6 +15,7 @@ public class SaleRecords {
         records.parseData();
         records.getTotalRevenue(allTransactions);
         records.getMostPopularProduct(allTransactions);
+        records.getAveragePrice(allTransactions);
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
@@ -23,15 +25,15 @@ public class SaleRecords {
             fileScanner.nextLine(); // Skips first row
             while (fileScanner.hasNextLine()) {
                 String line = fileScanner.nextLine();
-                String[] columns = line.split(","); // Splits each column by the comma and puts it into an array
+                String[] columns = line.split(",");
                 String date = columns[0];
                 String product = columns[1];
                 int quantitySold = Integer.parseInt(columns[2]);
                 BigDecimal salePrice = new BigDecimal(columns[3]);
-                Transaction transaction = new Transaction(date, product, quantitySold, salePrice); // Creates new transaction for each line of data
+                Transaction transaction = new Transaction(date, product, quantitySold, salePrice);
                 allTransactions.add(transaction);
                 }
-            // Print each line of data (now Transaction objects) to console
+            // Print each line of data (now Transaction objects) to the console
             for (Transaction transaction : allTransactions) {
                 System.out.println(transaction.toString());
             }
@@ -45,7 +47,7 @@ public class SaleRecords {
         for (Transaction transaction : allTransactions) {
             totalRevenue = totalRevenue.add(BigDecimal.valueOf(transaction.getQuantitySold()).multiply(transaction.getSalePrice()));
         }
-        System.out.println(totalRevenue.toString());
+        System.out.println("Total revenue: $" + totalRevenue.toString());
         return totalRevenue.setScale(2); // ensures two decimal places
     }
 
@@ -67,12 +69,38 @@ public class SaleRecords {
                 highestCount = count;
             }
         }
+        System.out.println("Most commonly sold product: " + mostPopularProduct);
         return mostPopularProduct;
     }
 
-    // TODO finish this method
-    // Question 3: What was the average sale price for each product?
-    public BigDecimal getAverageSalePrice(List<Transaction> allTransactions){
-        return null;
+    // Question 3: What was the average price between each product type?
+    public BigDecimal getAveragePrice(List<Transaction> allTransactions){
+        // assign each product and its price to key/value pairs in a map
+        Map<String, BigDecimal> productsPriceMap = new HashMap<>();
+        for (Transaction transaction : allTransactions) {
+            String product = transaction.getProduct();
+            BigDecimal price = transaction.getSalePrice();
+            productsPriceMap.put(product, price);
+        }
+        // for each loop through map to count the number of products and add all price values together
+        BigDecimal sumOfPrices = BigDecimal.ZERO;
+        int numberOfProducts = 0;
+        for (Map.Entry<String, BigDecimal> product : productsPriceMap.entrySet()) {
+            numberOfProducts = productsPriceMap.size();
+            sumOfPrices = sumOfPrices.add(product.getValue());
+        }
+        // calculate average
+        BigDecimal averagePrice = sumOfPrices.divide(BigDecimal.valueOf(numberOfProducts), 2, RoundingMode.HALF_UP);
+
+        System.out.println("Average product price: " + averagePrice.toString());
+        return averagePrice.setScale(2);
     }
+
+    // TODO add more data and write additional methods to find values based on below questions
+
+//    Find the total number of products sold for each product type.
+//    Find the date on which the most units of a particular product were sold.
+//    Identify which day of the week had the most sales, or the highest revenue.
+//    Calculate the total revenue for a specific date range.
+//    Find the average sale price for each day of the week.
 }

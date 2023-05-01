@@ -57,7 +57,7 @@ public class SaleRecordsTest {
         SaleRecords testRecords = new SaleRecords();
         // Act
         BigDecimal expected = new BigDecimal("31.67");
-        BigDecimal actual = testRecords.getAverageSalePrice(testTransactionList);
+        BigDecimal actual = testRecords.getAveragePrice(testTransactionList);
         // Assert
         Assert.assertEquals(expected, actual);
     }
