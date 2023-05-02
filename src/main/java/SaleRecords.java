@@ -75,6 +75,7 @@ public class SaleRecords {
     }
 
     // Question 3: What was the average price between each product type?
+    // TODO single responsibility - break this down into separate methods
     public BigDecimal getAveragePrice(List<Transaction> allTransactions){
         // assign each product and its price to key/value pairs in a map
         Map<String, BigDecimal> productsPriceMap = new HashMap<>();
