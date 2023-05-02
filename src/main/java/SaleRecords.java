@@ -16,6 +16,7 @@ public class SaleRecords {
         records.getTotalRevenue(allTransactions);
         records.getMostPopularProduct(allTransactions);
         records.getAveragePrice(allTransactions);
+        records.getTotalProductsSoldByType(allTransactions);
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
@@ -96,9 +97,21 @@ public class SaleRecords {
         return averagePrice.setScale(2);
     }
 
-    // TODO add more data and write additional methods to find values based on below questions
+    // TODO finish this method
+//  Find the total number of products sold for each product type.
+    public Map<String, Integer> getTotalProductsSoldByType(List<Transaction> allTransactions) {
+        Map<String, Integer> totalProductsSold = new HashMap<>();
+        for (Transaction transaction : allTransactions) {
+            String product = transaction.getProduct();
+            int count = transaction.getQuantitySold();
 
-//    Find the total number of products sold for each product type.
+        }
+        System.out.println(totalProductsSold.toString());
+        return totalProductsSold;
+    }
+
+    // TODO  write additional methods to find values based on below questions
+
 //    Find the date on which the most units of a particular product were sold.
 //    Identify which day of the week had the most sales, or the highest revenue.
 //    Calculate the total revenue for a specific date range.

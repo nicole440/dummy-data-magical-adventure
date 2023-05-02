@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class SaleRecordsTest {
 
@@ -62,4 +63,18 @@ public class SaleRecordsTest {
         Assert.assertEquals(expected, actual);
     }
 
+    @Test
+    public void getTotalProductsSoldByType_returns_total_quantity_of_products_sold_by_type() {
+        // Arrange
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_1);
+        testTransactionList.add(TEST_TRANSACTION_2);
+        testTransactionList.add(TEST_TRANSACTION_3);
+        testTransactionList.add(TEST_TRANSACTION_4);
+        SaleRecords testRecords = new SaleRecords();
+        // Act
+
+        // Assert
+
+    }
 }
