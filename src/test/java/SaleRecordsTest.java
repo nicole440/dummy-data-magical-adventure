@@ -13,8 +13,12 @@ public class SaleRecordsTest {
     private static final Transaction TEST_TRANSACTION_3 = new Transaction("2022-01-03", "Shoes", 3, BigDecimal.valueOf(50.00));
     private static final Transaction TEST_TRANSACTION_4 = new Transaction("2022-01-11", "Shoes", 9, BigDecimal.valueOf(50.00));
 
+    private static final Transaction TEST_TRANSACTION_5 = new Transaction("2022-02-01", "Shirt", 4, BigDecimal.valueOf(20.00));
+    private static final Transaction TEST_TRANSACTION_6 = new Transaction("2022-02-02", "Pants", 4, BigDecimal.valueOf(25.00));
+    private static final Transaction TEST_TRANSACTION_7 = new Transaction("2022-02-03", "Shoes", 4, BigDecimal.valueOf(50.00));
+
     @Test
-    public void getTotalRevenue_returns_sum_of_quantity_times_price_for_each_transaction() {
+    public void getTotalRevenue_returns_sum_of_quantity_times_price_for_each_transaction_happy_path() {
         // Arrange
         List<Transaction> testTransactionList = new ArrayList<>();
         testTransactionList.add(TEST_TRANSACTION_1);
@@ -39,6 +43,21 @@ public class SaleRecordsTest {
         SaleRecords testRecords = new SaleRecords();
         // Act
         String expected = "Shoes";
+        String actual = testRecords.getMostPopularProduct(testTransactionList);
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getMostPopularProduct_when_products_all_have_same_quantities_sold() {
+        // Arrange
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_5);
+        testTransactionList.add(TEST_TRANSACTION_6);
+        testTransactionList.add(TEST_TRANSACTION_7);
+        SaleRecords testRecords = new SaleRecords();
+        // Act
+        String expected = "Shirt, Pants, Shoes";
         String actual = testRecords.getMostPopularProduct(testTransactionList);
         // Assert
         Assert.assertEquals(expected, actual);

@@ -33,12 +33,11 @@ public class SaleRecords {
                 BigDecimal salePrice = new BigDecimal(columns[3]);
                 Transaction transaction = new Transaction(date, product, quantitySold, salePrice);
                 allTransactions.add(transaction);
-                }
+            }
         }
         return allTransactions;
     }
 
-    // Question 1: What was the total revenue for the year?
     public BigDecimal getTotalRevenue(List<Transaction> allTransactions) {
         BigDecimal totalRevenue = BigDecimal.ZERO;
         for (Transaction transaction : allTransactions) {
@@ -48,7 +47,6 @@ public class SaleRecords {
         return totalRevenue.setScale(2); // ensures two decimal places
     }
 
-    // Question 2: What was the most commonly sold product?
     public String getMostPopularProduct(List<Transaction> allTransactions) {
         // Place product type and quantity sold for each product into a map, adding additional quantities to each value
         Map<String, Integer> productCountMap = new HashMap<>();
@@ -68,22 +66,25 @@ public class SaleRecords {
                 highestCount = count;
             }
         }
+        // Handles when the quantity sold of the most popular product is the same as other product quantities sold
+        for (Map.Entry<String, Integer> entry : productCountMap.entrySet()) {
+            if (highestCount == entry.getValue() && !Objects.equals(entry.getKey(), mostPopularProduct)) {
+                mostPopularProduct += ", " + entry.getKey();
+            }
+        }
         printPopularProduct(mostPopularProduct);
         return mostPopularProduct;
     }
 
-
-
-    // Question 3: What was the average price between each product type?
     public BigDecimal getAveragePrice(List<Transaction> allTransactions) {
-        // assign each product and its price to key/value pairs in a map
+        // Assign each product and its price to key/value pairs in a map
         Map<String, BigDecimal> productsPriceMap = new HashMap<>();
         for (Transaction transaction : allTransactions) {
             String product = transaction.getProduct();
             BigDecimal price = transaction.getSalePrice();
             productsPriceMap.put(product, price);
         }
-        // for each loop through map to count the number of products and add all price values together by product type
+        // For each loop through map to count the number of products and add all price values together by product type
         BigDecimal sumOfPrices = BigDecimal.ZERO;
         int numberOfProducts = 0;
         for (Map.Entry<String, BigDecimal> product : productsPriceMap.entrySet()) {
@@ -98,13 +99,12 @@ public class SaleRecords {
 
 
     // TODO finish this method
-//  Find the total number of products sold for each product type.
+    // Question 4: Find the total number of products sold for each product type.
     public Map<String, Integer> getTotalProductsSoldByType(List<Transaction> allTransactions) {
         Map<String, Integer> totalProductsSold = new HashMap<>();
         for (Transaction transaction : allTransactions) {
             String product = transaction.getProduct();
             int count = transaction.getQuantitySold();
-            totalProductsSold.put(product, count + transaction.getQuantitySold());
 
         }
         System.out.println(totalProductsSold.toString());
@@ -113,10 +113,10 @@ public class SaleRecords {
 
     // TODO  write additional methods to find values based on below questions
 
-//    Find the date on which the most units of a particular product were sold.
-//    Identify which day of the week had the most sales, or the highest revenue.
-//    Calculate the total revenue for a specific date range.
-//    Find the average sale price for each day of the week.
+// Question 5: Find the date on which the most units of a particular product were sold.
+// Question 6: Identify which day of the week had the most sales, or the highest revenue.
+// Question 7: Calculate the total revenue for a specific date range.
+// Question 8: Find the average sale price for each day of the week.
 
 
     public void printAllTransactions() {
@@ -126,7 +126,7 @@ public class SaleRecords {
     }
 
     public void printPopularProduct(String mostPopularProduct) {
-        System.out.println("Most commonly sold product: " + mostPopularProduct);
+        System.out.println("Most popular product: " + mostPopularProduct);
     }
 
     public void printAveragePrice(BigDecimal averagePrice) {
