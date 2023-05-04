@@ -9,6 +9,7 @@ import java.util.*;
 public class SaleRecords {
 
     static List<Transaction> allTransactions = new ArrayList<>();
+    static SalesRecordPrinter printer = new SalesRecordPrinter();
 
     public static void main(String[] args) throws FileNotFoundException {
         SaleRecords records = new SaleRecords();
@@ -42,9 +43,11 @@ public class SaleRecords {
         BigDecimal totalRevenue = BigDecimal.ZERO;
         for (Transaction transaction : allTransactions) {
             totalRevenue = totalRevenue.add(BigDecimal.valueOf(transaction.getQuantitySold()).multiply(transaction.getSalePrice()));
+            totalRevenue = totalRevenue.setScale(2, RoundingMode.HALF_UP);
         }
-        System.out.println("Total revenue: $" + totalRevenue.toString());
-        return totalRevenue.setScale(2); // ensures two decimal places
+//
+        printer.printTotalRevenue(totalRevenue);
+        return totalRevenue; // ensures two decimal places
     }
 
     public String getMostPopularProduct(List<Transaction> allTransactions) {
@@ -72,7 +75,7 @@ public class SaleRecords {
                 mostPopularProduct += ", " + entry.getKey();
             }
         }
-        printPopularProduct(mostPopularProduct);
+        printer.printPopularProduct(mostPopularProduct);
         return mostPopularProduct;
     }
 
@@ -93,7 +96,7 @@ public class SaleRecords {
         }
         BigDecimal averagePrice = sumOfPrices.divide(BigDecimal.valueOf(numberOfProducts), 2, RoundingMode.HALF_UP);
 
-        printAveragePrice(averagePrice);
+        printer.printAveragePrice(averagePrice);
         return averagePrice;
     }
 
@@ -104,7 +107,7 @@ public class SaleRecords {
             int count = totalProductsSold.getOrDefault(product, 0);
             totalProductsSold.put(product, count + transaction.getQuantitySold());
         }
-        printTotalSoldOfEachProduct(totalProductsSold);
+        printer.printTotalSoldOfEachProduct(totalProductsSold);
         return totalProductsSold;
     }
 
@@ -115,32 +118,4 @@ public class SaleRecords {
 // Question 7: Calculate the total revenue for a specific date range.
 // Question 8: Find the average sale price for each day of the week.
 
-
-/** Print methods called within each method to print data to the console*/
-
-    public void printAllTransactions() {
-        for (Transaction transaction : allTransactions) {
-            System.out.println(transaction.toString());
-        }
-    }
-
-    public void printPopularProduct(String mostPopularProduct) {
-        System.out.println("Most popular product: " + mostPopularProduct);
-    }
-
-    public void printAveragePrice(BigDecimal averagePrice) {
-        System.out.println("Average product price: " + averagePrice.toString());
-    }
-
-    public void printTotalSoldOfEachProduct(Map<String, Integer> totalProductsSold) {
-        String productType = "";
-        int quantitySold = 0;
-        System.out.println("Total quantity sold of each product:");
-        for (Map.Entry<String, Integer> product : totalProductsSold.entrySet()) {
-            productType = product.getKey();
-            quantitySold = product.getValue();
-            System.out.println(productType + " : " + quantitySold);
-        }
-    }
 }
-
