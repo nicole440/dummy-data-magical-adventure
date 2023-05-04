@@ -4,7 +4,9 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class SaleRecordsTest {
 
@@ -87,10 +89,15 @@ public class SaleRecordsTest {
         testTransactionList.add(TEST_TRANSACTION_2);
         testTransactionList.add(TEST_TRANSACTION_3);
         testTransactionList.add(TEST_TRANSACTION_4);
-        SaleRecords testRecords = new SaleRecords();
         // Act
+        SaleRecords testRecords = new SaleRecords();
+        Map<String, Integer> expected = new HashMap<>();
+        expected.put("Shirt", 10);
+        expected.put("Pants", 5);
+        expected.put("Shoes", 12);
 
+        Map<String, Integer> result = testRecords.getTotalProductsSoldByType(testTransactionList);
         // Assert
-
+        Assert.assertEquals(expected, result);
     }
 }

@@ -97,17 +97,14 @@ public class SaleRecords {
         return averagePrice;
     }
 
-
-    // TODO finish this method
-    // Question 4: Find the total number of products sold for each product type.
     public Map<String, Integer> getTotalProductsSoldByType(List<Transaction> allTransactions) {
         Map<String, Integer> totalProductsSold = new HashMap<>();
         for (Transaction transaction : allTransactions) {
             String product = transaction.getProduct();
-            int count = transaction.getQuantitySold();
-
+            int count = totalProductsSold.getOrDefault(product, 0);
+            totalProductsSold.put(product, count + transaction.getQuantitySold());
         }
-        System.out.println(totalProductsSold.toString());
+        printTotalSoldOfEachProduct(totalProductsSold);
         return totalProductsSold;
     }
 
@@ -118,6 +115,8 @@ public class SaleRecords {
 // Question 7: Calculate the total revenue for a specific date range.
 // Question 8: Find the average sale price for each day of the week.
 
+
+/** Print methods called within each method to print data to the console*/
 
     public void printAllTransactions() {
         for (Transaction transaction : allTransactions) {
@@ -133,5 +132,15 @@ public class SaleRecords {
         System.out.println("Average product price: " + averagePrice.toString());
     }
 
+    public void printTotalSoldOfEachProduct(Map<String, Integer> totalProductsSold) {
+        String productType = "";
+        int quantitySold = 0;
+        System.out.println("Total quantity sold of each product:");
+        for (Map.Entry<String, Integer> product : totalProductsSold.entrySet()) {
+            productType = product.getKey();
+            quantitySold = product.getValue();
+            System.out.println(productType + " : " + quantitySold);
+        }
+    }
 }
 
