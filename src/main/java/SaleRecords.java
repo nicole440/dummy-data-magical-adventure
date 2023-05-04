@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.LocalDate;
 import java.util.*;
 
 public class SaleRecords {
@@ -18,6 +19,7 @@ public class SaleRecords {
         records.getMostPopularProduct(allTransactions);
         records.getAveragePrice(allTransactions);
         records.getTotalProductsSoldByType(allTransactions);
+        records.getDateOfHighestQuantitySalesOfAProduct(allTransactions, "Shirt");
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
@@ -45,9 +47,8 @@ public class SaleRecords {
             totalRevenue = totalRevenue.add(BigDecimal.valueOf(transaction.getQuantitySold()).multiply(transaction.getSalePrice()));
             totalRevenue = totalRevenue.setScale(2, RoundingMode.HALF_UP);
         }
-//
         printer.printTotalRevenue(totalRevenue);
-        return totalRevenue; // ensures two decimal places
+        return totalRevenue;
     }
 
     public String getMostPopularProduct(List<Transaction> allTransactions) {
@@ -95,7 +96,6 @@ public class SaleRecords {
             sumOfPrices = sumOfPrices.add(product.getValue());
         }
         BigDecimal averagePrice = sumOfPrices.divide(BigDecimal.valueOf(numberOfProducts), 2, RoundingMode.HALF_UP);
-
         printer.printAveragePrice(averagePrice);
         return averagePrice;
     }
@@ -111,9 +111,34 @@ public class SaleRecords {
         return totalProductsSold;
     }
 
+    public LocalDate getDateOfHighestQuantitySalesOfAProduct(List<Transaction> allTransactions, String productType) {
+        Map<LocalDate, Integer> dateAndQuantityMap = new HashMap<>();
+        LocalDate date = null;
+        int highestQuantity = 0;
+        for (Transaction transaction : allTransactions) {
+            String product = transaction.getProduct();
+            if (product.equals(productType)) {
+                date = LocalDate.parse(transaction.getDate());
+                int quantitySold = transaction.getQuantitySold();
+                dateAndQuantityMap.put(date, quantitySold);
+                if (quantitySold > highestQuantity) {
+                    highestQuantity = quantitySold;
+                }
+            }
+        }
+        LocalDate dateWithHighestQuantity = null;
+        for (Map.Entry<LocalDate, Integer> transaction : dateAndQuantityMap.entrySet()) {
+            if (transaction.getValue() == highestQuantity) {
+                dateWithHighestQuantity = transaction.getKey();
+                break;
+            }
+        }
+        printer.printDate(dateWithHighestQuantity, productType);
+        return dateWithHighestQuantity;
+    }
+
     // TODO  write additional methods to find values based on below questions
 
-// Question 5: Find the date on which the most units of a particular product were sold.
 // Question 6: Identify which day of the week had the most sales, or the highest revenue.
 // Question 7: Calculate the total revenue for a specific date range.
 // Question 8: Find the average sale price for each day of the week.

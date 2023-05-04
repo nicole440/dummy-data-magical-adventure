@@ -1,6 +1,7 @@
 import model.Transaction;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Map;
 
 public class SalesRecordPrinter {
@@ -34,5 +35,9 @@ public class SalesRecordPrinter {
             quantitySold = product.getValue();
             System.out.println(productType + " : " + quantitySold);
         }
+    }
+
+    public void printDate(LocalDate date, String productType) {
+        System.out.println("Date of highest quantity sales of " + productType + " : " + date);
     }
 }

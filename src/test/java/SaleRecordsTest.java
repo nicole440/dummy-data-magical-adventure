@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -100,4 +101,22 @@ public class SaleRecordsTest {
         // Assert
         Assert.assertEquals(expected, result);
     }
+
+    @Test
+    public void getDateOfHighestQuantitySalesOfAProduct_returns_LocalDate_of_highest_sales_of_product() {
+        // Arrange
+        SaleRecords testRecords = new SaleRecords();
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_1);
+        testTransactionList.add(TEST_TRANSACTION_2);
+        testTransactionList.add(TEST_TRANSACTION_3);
+        testTransactionList.add(TEST_TRANSACTION_4);
+        String testProductType = "Shoes";
+        // Act
+        LocalDate expected = LocalDate.of(2022, 01, 11);
+        LocalDate result = testRecords.getDateOfHighestQuantitySalesOfAProduct(testTransactionList, testProductType);
+        // Assert
+        Assert.assertEquals(expected, result);
+    }
+    // TODO create additional test cases
 }
