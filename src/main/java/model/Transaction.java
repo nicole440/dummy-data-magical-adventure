@@ -1,6 +1,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Transaction {
     private String date;
@@ -45,6 +46,11 @@ public class Transaction {
 
     public void setSalePrice(BigDecimal salePrice) {
         this.salePrice = salePrice;
+    }
+
+    public BigDecimal getRevenue() {
+        BigDecimal revenue = this.salePrice.multiply(BigDecimal.valueOf(this.quantitySold)).setScale(2, RoundingMode.HALF_UP);
+        return revenue;
     }
 
     @Override
