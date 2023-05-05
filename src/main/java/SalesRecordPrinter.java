@@ -1,6 +1,7 @@
 import model.Transaction;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.Map;
 
@@ -39,5 +40,9 @@ public class SalesRecordPrinter {
 
     public void printDate(LocalDate date, String productType) {
         System.out.println("Date of highest quantity sales of " + productType + " : " + date);
+    }
+
+    public void printDayOfWeek(DayOfWeek dayOfWeek) {
+        System.out.println("Day of week with highest revenue: " + dayOfWeek);
     }
 }

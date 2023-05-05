@@ -3,6 +3,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -46,6 +47,21 @@ public class SaleRecordsTest {
         SaleRecords testRecords = new SaleRecords();
         // Act
         String expected = "Shoes";
+        String actual = testRecords.getMostPopularProduct(testTransactionList);
+        // Assert
+        Assert.assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getMostPopularProduct_when_two_products_have_highest_quantities_sold() {
+        // Arrange
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_5);
+        testTransactionList.add(TEST_TRANSACTION_6);
+        testTransactionList.add(TEST_TRANSACTION_3);
+        SaleRecords testRecords = new SaleRecords();
+        // Act
+        String expected = "Shirt, Pants";
         String actual = testRecords.getMostPopularProduct(testTransactionList);
         // Assert
         Assert.assertEquals(expected, actual);
@@ -96,7 +112,6 @@ public class SaleRecordsTest {
         expected.put("Shirt", 10);
         expected.put("Pants", 5);
         expected.put("Shoes", 12);
-
         Map<String, Integer> result = testRecords.getTotalProductsSoldByType(testTransactionList);
         // Assert
         Assert.assertEquals(expected, result);
@@ -118,5 +133,22 @@ public class SaleRecordsTest {
         // Assert
         Assert.assertEquals(expected, result);
     }
+
+    @Test
+    public void getDayOfWeekWithHighestRevenue_returns_DayOfWeek_with_highest_revenue() {
+        // Arrange
+        SaleRecords testRecords = new SaleRecords();
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_1); // Saturday, $200
+        testTransactionList.add(TEST_TRANSACTION_2); // Sunday, $125
+        testTransactionList.add(TEST_TRANSACTION_3); // Monday, $150
+        testTransactionList.add(TEST_TRANSACTION_4); // Tuesday, $450
+        // Act
+        DayOfWeek expected = DayOfWeek.TUESDAY;
+        DayOfWeek result = testRecords.getDayOfWeekWithHighestRevenue(testTransactionList);
+        // Assert
+        Assert.assertEquals(expected, result);
+    }
+    
     // TODO create additional test cases
 }

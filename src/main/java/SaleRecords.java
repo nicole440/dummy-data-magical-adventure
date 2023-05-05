@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -20,6 +21,7 @@ public class SaleRecords {
         records.getAveragePrice(allTransactions);
         records.getTotalProductsSoldByType(allTransactions);
         records.getDateOfHighestQuantitySalesOfAProduct(allTransactions, "Shirt");
+        records.getDayOfWeekWithHighestRevenue(allTransactions);
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
@@ -44,8 +46,7 @@ public class SaleRecords {
     public BigDecimal getTotalRevenue(List<Transaction> allTransactions) {
         BigDecimal totalRevenue = BigDecimal.ZERO;
         for (Transaction transaction : allTransactions) {
-            totalRevenue = totalRevenue.add(BigDecimal.valueOf(transaction.getQuantitySold()).multiply(transaction.getSalePrice()));
-            totalRevenue = totalRevenue.setScale(2, RoundingMode.HALF_UP);
+            totalRevenue = totalRevenue.add(transaction.getRevenue());
         }
         printer.printTotalRevenue(totalRevenue);
         return totalRevenue;
@@ -139,7 +140,34 @@ public class SaleRecords {
 
     // TODO  write additional methods to find values based on below questions
 
-// Question 6: Identify which day of the week had the most sales, or the highest revenue.
+    public DayOfWeek getDayOfWeekWithHighestRevenue(List<Transaction> allTransactions) {
+        // find transaction with highest revenue
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
+        BigDecimal revenue;
+        LocalDate date;
+        for (Transaction transaction : allTransactions) {
+            date = LocalDate.parse(transaction.getDate());
+            revenue = transaction.getRevenue();
+            dateAndRevenueMap.put(date, revenue);
+        }
+        BigDecimal highestRevenue = BigDecimal.ZERO;
+        BigDecimal currentRevenue;
+        DayOfWeek dayOfWeek = null;
+        for (Map.Entry<LocalDate, BigDecimal> entry : dateAndRevenueMap.entrySet()) {
+            LocalDate transactionDate = entry.getKey();
+            currentRevenue = entry.getValue();
+            if (currentRevenue.compareTo(highestRevenue) > 0) {
+                highestRevenue = currentRevenue;
+                dayOfWeek = transactionDate.getDayOfWeek();
+            }
+        }
+        printer.printDayOfWeek(dayOfWeek);
+        return dayOfWeek;
+    }
+
+
+    // putInMap method taking in key, value params?
+
 // Question 7: Calculate the total revenue for a specific date range.
 // Question 8: Find the average sale price for each day of the week.
 
