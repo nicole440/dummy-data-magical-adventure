@@ -138,10 +138,7 @@ public class SaleRecords {
         return dateWithHighestQuantity;
     }
 
-    // TODO  write additional methods to find values based on below questions
-
     public DayOfWeek getDayOfWeekWithHighestRevenue(List<Transaction> allTransactions) {
-        // find transaction with highest revenue
         Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
         BigDecimal revenue;
         LocalDate date;
@@ -165,10 +162,24 @@ public class SaleRecords {
         return dayOfWeek;
     }
 
+    public BigDecimal getRevenueByTimePeriod(List<Transaction> allTransactions, LocalDate startDate, LocalDate endDate) {
+        LocalDate date;
+        BigDecimal revenue = BigDecimal.ZERO;
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
+        for (Transaction transaction : allTransactions) {
+            revenue = transaction.getRevenue();
+            date = LocalDate.parse(transaction.getDate());
+            if (date.isAfter(startDate) || date.isEqual(startDate) && date.isBefore(endDate) || date.isEqual(endDate)) {
+                dateAndRevenueMap.put(date, revenue);
+                // TODO finish this method
+            }
+        }
 
-    // putInMap method taking in key, value params?
+        return revenue;
+    }
 
-// Question 7: Calculate the total revenue for a specific date range.
+    // TODO  write additional methods to find values based on below questions
+
 // Question 8: Find the average sale price for each day of the week.
 
 }

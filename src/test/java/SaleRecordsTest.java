@@ -149,6 +149,22 @@ public class SaleRecordsTest {
         // Assert
         Assert.assertEquals(expected, result);
     }
-    
+
+    @Test
+    public void getRevenueByTimePeriod_returns_total_revenue_for_given_time_period() {
+        // Arrange
+        SaleRecords testRecords = new SaleRecords();
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_1); // $200
+        testTransactionList.add(TEST_TRANSACTION_2); // $125
+        testTransactionList.add(TEST_TRANSACTION_3); // $150
+        testTransactionList.add(TEST_TRANSACTION_4); // $450
+        // Act
+        BigDecimal expected = BigDecimal.valueOf(925.00);
+        BigDecimal result = testRecords.getRevenueByTimePeriod(testTransactionList, LocalDate.of(2022, 01, 01), LocalDate.of(2022, 01, 11));
+        // Assert
+        Assert.assertEquals(expected, result);
+    }
+
     // TODO create additional test cases
 }
