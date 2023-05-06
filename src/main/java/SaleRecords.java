@@ -178,8 +178,20 @@ public class SaleRecords {
         return revenue;
     }
 
-    // TODO  write additional methods to find values based on below questions
+    // TODO finish this method
 
 // Question 8: Find the average sale price for each day of the week.
+    public Map<DayOfWeek, BigDecimal> getAverageRevenueForEachDayOfWeek(List<Transaction> allTransactions) {
+        LocalDate date;
+        BigDecimal revenue = BigDecimal.ZERO;
+        Map<DayOfWeek, BigDecimal> dayOfWeekAndRevenueMap = new HashMap<>();
+        for (Transaction transaction: allTransactions) {
+            revenue = transaction.getRevenue();
+            date = LocalDate.parse(transaction.getDate());
+            
+        }
+
+        return dayOfWeekAndRevenueMap;
+    }
 
 }
