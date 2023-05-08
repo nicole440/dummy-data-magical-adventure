@@ -22,6 +22,7 @@ public class SaleRecords {
         records.getTotalProductsSoldByType(allTransactions);
         records.getDateOfHighestQuantitySalesOfAProduct(allTransactions, "Shirt");
         records.getDayOfWeekWithHighestRevenue(allTransactions);
+        records.getRevenueByTimePeriod(allTransactions, LocalDate.now(), LocalDate.now());
     }
     
     public List<Transaction> parseData() throws FileNotFoundException {
@@ -165,17 +166,19 @@ public class SaleRecords {
     public BigDecimal getRevenueByTimePeriod(List<Transaction> allTransactions, LocalDate startDate, LocalDate endDate) {
         LocalDate date;
         BigDecimal revenue = BigDecimal.ZERO;
+        BigDecimal totalRevenue = BigDecimal.ZERO;
         Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
         for (Transaction transaction : allTransactions) {
-            revenue = transaction.getRevenue();
             date = LocalDate.parse(transaction.getDate());
             if (date.isAfter(startDate) || date.isEqual(startDate) && date.isBefore(endDate) || date.isEqual(endDate)) {
+                revenue = transaction.getRevenue();
                 dateAndRevenueMap.put(date, revenue);
-                // TODO finish this method
             }
         }
-
-        return revenue;
+        for (Map.Entry<LocalDate, BigDecimal> entry : dateAndRevenueMap.entrySet()) {
+            totalRevenue = totalRevenue.add(entry.getValue()).setScale(2, RoundingMode.HALF_UP);
+        }
+        return totalRevenue;
     }
 
     // TODO finish this method
@@ -188,7 +191,7 @@ public class SaleRecords {
         for (Transaction transaction: allTransactions) {
             revenue = transaction.getRevenue();
             date = LocalDate.parse(transaction.getDate());
-            
+
         }
 
         return dayOfWeekAndRevenueMap;

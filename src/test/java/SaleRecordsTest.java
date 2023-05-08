@@ -160,7 +160,7 @@ public class SaleRecordsTest {
         testTransactionList.add(TEST_TRANSACTION_3); // $150
         testTransactionList.add(TEST_TRANSACTION_4); // $450
         // Act
-        BigDecimal expected = BigDecimal.valueOf(925.00);
+        BigDecimal expected = BigDecimal.valueOf(925.00).setScale(2);
         BigDecimal result = testRecords.getRevenueByTimePeriod(testTransactionList, LocalDate.of(2022, 01, 01), LocalDate.of(2022, 01, 11));
         // Assert
         Assert.assertEquals(expected, result);
