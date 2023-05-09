@@ -24,7 +24,7 @@ public class SalesRecordPrinter {
     }
 
     public void printAveragePrice(BigDecimal averagePrice) {
-        System.out.println("Average product price: " + averagePrice.toString());
+        System.out.println("Average product price: $" + averagePrice.toString());
     }
 
     public void printTotalSoldOfEachProduct(Map<String, Integer> totalProductsSold) {
