@@ -21,6 +21,8 @@ public class SaleRecordsTest {
     private static final Transaction TEST_TRANSACTION_6 = new Transaction("2022-02-02", "Pants", 4, BigDecimal.valueOf(25.00));
     private static final Transaction TEST_TRANSACTION_7 = new Transaction("2022-02-03", "Shoes", 4, BigDecimal.valueOf(50.00));
 
+    private static final Transaction TEST_TRANSACTION_8 = new Transaction("2022-02-03", "Shirt", 4, BigDecimal.valueOf(20.00));
+
     @Test
     public void getTotalRevenue_returns_sum_of_quantity_times_price_for_each_transaction_happy_path() {
         // Arrange
@@ -162,6 +164,20 @@ public class SaleRecordsTest {
         // Act
         BigDecimal expected = BigDecimal.valueOf(925.00).setScale(2);
         BigDecimal result = testRecords.getRevenueByTimePeriod(testTransactionList, LocalDate.of(2022, 01, 01), LocalDate.of(2022, 01, 11));
+        // Assert
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void getRevenueByTimePeriod_returns_correct_revenue_when_given_multiple_sales_in_single_day_range() {
+        // Arrange
+        SaleRecords testRecords = new SaleRecords();
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_7); // $200
+        testTransactionList.add(TEST_TRANSACTION_8); // $80
+        // Act
+        BigDecimal expected = BigDecimal.valueOf(280.00).setScale(2);
+        BigDecimal result = testRecords.getRevenueByTimePeriod(testTransactionList, LocalDate.of(2022, 02, 03), LocalDate.of(2022, 02, 03));
         // Assert
         Assert.assertEquals(expected, result);
     }
