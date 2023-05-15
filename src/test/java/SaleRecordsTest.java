@@ -136,6 +136,7 @@ public class SaleRecordsTest {
         Assert.assertEquals(expected, result);
     }
 
+    // TODO revise test to reflect method refactoring, whereby it now takes in a hashmap as parameter
     @Test
     public void getDayOfWeekWithHighestRevenue_returns_DayOfWeek_with_highest_revenue() {
         // Arrange
@@ -169,7 +170,7 @@ public class SaleRecordsTest {
     }
 
     @Test
-    public void getRevenueByTimePeriod_returns_correct_revenue_when_given_multiple_sales_in_single_day_range() {
+    public void getRevenueByTimePeriod_returns_correct_revenue_when_given_single_day_range() {
         // Arrange
         SaleRecords testRecords = new SaleRecords();
         List<Transaction> testTransactionList = new ArrayList<>();

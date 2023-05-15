@@ -21,7 +21,9 @@ public class SaleRecords {
         records.getAveragePrice(allTransactions);
         records.getTotalProductsSoldByType(allTransactions);
         records.getDateOfHighestQuantitySalesOfAProduct(allTransactions, "Shirt");
-        records.getDayOfWeekWithHighestRevenue(allTransactions);
+
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = records.createMapOfAllDatesAndRevenues(allTransactions);
+        DayOfWeek dayOfWeekWithHighestRevenue = records.getDayOfWeekWithHighestRevenue(dateAndRevenueMap);
         records.getRevenueByTimePeriod(allTransactions, LocalDate.now(), LocalDate.now());
     }
     
@@ -115,7 +117,7 @@ public class SaleRecords {
 
     public LocalDate getDateOfHighestQuantitySalesOfAProduct(List<Transaction> allTransactions, String productType) {
         Map<LocalDate, Integer> dateAndQuantityMap = new HashMap<>();
-        LocalDate date = null;
+        LocalDate date;
         int highestQuantity = 0;
         for (Transaction transaction : allTransactions) {
             String product = transaction.getProduct();
@@ -139,7 +141,7 @@ public class SaleRecords {
         return dateWithHighestQuantity;
     }
 
-    public DayOfWeek getDayOfWeekWithHighestRevenue(List<Transaction> allTransactions) {
+    public Map<LocalDate, BigDecimal> createMapOfAllDatesAndRevenues(List<Transaction> allTransactions){
         Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
         BigDecimal revenue;
         LocalDate date;
@@ -148,6 +150,9 @@ public class SaleRecords {
             revenue = transaction.getRevenue();
             dateAndRevenueMap.put(date, revenue);
         }
+        return dateAndRevenueMap;
+    }
+    public DayOfWeek getDayOfWeekWithHighestRevenue(Map<LocalDate, BigDecimal> dateAndRevenueMap) {
         BigDecimal highestRevenue = BigDecimal.ZERO;
         BigDecimal currentRevenue;
         DayOfWeek dayOfWeek = null;
@@ -171,7 +176,9 @@ public class SaleRecords {
         for (Transaction transaction : allTransactions) {
             date = LocalDate.parse(transaction.getDate());
             if (date.isAfter(startDate) || date.isEqual(startDate) && date.isBefore(endDate) || date.isEqual(endDate)) {
-                revenue = transaction.getRevenue();
+                if (!startDate.isEqual(endDate)) {
+                    revenue = transaction.getRevenue();
+                } else revenue = revenue.add(transaction.getRevenue());
                 dateAndRevenueMap.put(date, revenue);
             }
         }
@@ -187,14 +194,14 @@ public class SaleRecords {
     public Map<DayOfWeek, BigDecimal> getAverageRevenueForEachDayOfWeek(List<Transaction> allTransactions) {
         LocalDate date;
         BigDecimal revenue = BigDecimal.ZERO;
-        Map<DayOfWeek, BigDecimal> dayOfWeekAndRevenueMap = new HashMap<>();
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
         for (Transaction transaction: allTransactions) {
             revenue = transaction.getRevenue();
             date = LocalDate.parse(transaction.getDate());
-
+            dateAndRevenueMap.put(date, revenue);
         }
 
-        return dayOfWeekAndRevenueMap;
+        return null;
     }
 
 }
