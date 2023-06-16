@@ -146,9 +146,10 @@ public class SaleRecordsTest {
         testTransactionList.add(TEST_TRANSACTION_2); // Sunday, $125
         testTransactionList.add(TEST_TRANSACTION_3); // Monday, $150
         testTransactionList.add(TEST_TRANSACTION_4); // Tuesday, $450
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = testRecords.createMapOfAllDatesAndRevenues(testTransactionList);
         // Act
         DayOfWeek expected = DayOfWeek.TUESDAY;
-        DayOfWeek result = testRecords.getDayOfWeekWithHighestRevenue(testTransactionList);
+        DayOfWeek result = testRecords.getDayOfWeekWithHighestRevenue(dateAndRevenueMap);
         // Assert
         Assert.assertEquals(expected, result);
     }
