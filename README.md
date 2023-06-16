@@ -20,13 +20,15 @@ The program will read the dataset.csv file in the same directory as the program,
 - Total products sold by type: the number of products sold for each product type.
 - Date of highest quantity sales of a product: the date when the highest quantity of a given product type was sold.
 - Day of week with highest revenue: the day of the week when the most revenue was generated.
+- The total revenue generated within a specific time period.
+- Average revenue for each day of the week.
 
 - The program uses a Transaction class to represent each transaction, and a SalesRecordPrinter class to output the results to the console. The main class is SaleRecords, which contains the main method that runs the program.
 
 ## Limitations
 This program has a few limitations:
 
-- The dataset is assumed to be in a CSV file with a specific format: date, product type, quantity sold, sale price.
+- The dataset is assumed to be in a CSV file with a specific format: date, product type, quantity sold, sale price. Only one transaction listed per day.
 - The program assumes that the dataset contains valid and consistent data.
 - The program outputs the results to the console, but could be extended to output to a file or a database.
 - The program does not have a user interface, and is run from the command line.
