@@ -17,7 +17,7 @@ public class SaleRecordsTest {
     private static final Transaction TEST_TRANSACTION_3 = new Transaction("2022-01-03", "Shoes", 3, BigDecimal.valueOf(50.00));
     private static final Transaction TEST_TRANSACTION_4 = new Transaction("2022-01-11", "Shoes", 9, BigDecimal.valueOf(50.00));
 
-    private static final Transaction TEST_TRANSACTION_5 = new Transaction("2022-02-01", "Shirt", 4, BigDecimal.valueOf(20.00));
+    private static final Transaction TEST_TRANSACTION_5 = new Transaction("2022-01-28", "Shirt", 4, BigDecimal.valueOf(20.00));
     private static final Transaction TEST_TRANSACTION_6 = new Transaction("2022-02-02", "Pants", 4, BigDecimal.valueOf(25.00));
     private static final Transaction TEST_TRANSACTION_7 = new Transaction("2022-02-03", "Shoes", 4, BigDecimal.valueOf(50.00));
 
@@ -136,7 +136,6 @@ public class SaleRecordsTest {
         Assert.assertEquals(expected, result);
     }
 
-    // TODO revise test to reflect method refactoring, whereby it now takes in a hashmap as parameter
     @Test
     public void getDayOfWeekWithHighestRevenue_returns_DayOfWeek_with_highest_revenue() {
         // Arrange
@@ -180,6 +179,28 @@ public class SaleRecordsTest {
         // Act
         BigDecimal expected = BigDecimal.valueOf(280.00).setScale(2);
         BigDecimal result = testRecords.getRevenueByTimePeriod(testTransactionList, LocalDate.of(2022, 02, 03), LocalDate.of(2022, 02, 03));
+        // Assert
+        Assert.assertEquals(expected, result);
+    }
+
+    @Test
+    public void getAverageRevenueForEachDayOfWeek_happy_path() {
+        // Arrange
+        SaleRecords testRecords = new SaleRecords();
+        List<Transaction> testTransactionList = new ArrayList<>();
+        testTransactionList.add(TEST_TRANSACTION_1); // Saturday, $200
+        testTransactionList.add(TEST_TRANSACTION_2); // Sunday, $125
+        testTransactionList.add(TEST_TRANSACTION_3); // Monday, $150
+        testTransactionList.add(TEST_TRANSACTION_4); // Tuesday, $450
+        testTransactionList.add(TEST_TRANSACTION_5); // Friday, $80
+        testTransactionList.add(TEST_TRANSACTION_6); // Wednesday, $100
+        testTransactionList.add(TEST_TRANSACTION_7); // Thursday, $200
+        testTransactionList.add(TEST_TRANSACTION_8); // Thursday, $80
+
+        Map<DayOfWeek, BigDecimal> expected = new HashMap<>();
+        testRecords.createMapOfAllDatesAndRevenues(testTransactionList);
+        // Act
+        Map<DayOfWeek, BigDecimal> result = testRecords.getAverageRevenueForEachDayOfWeek(testTransactionList);
         // Assert
         Assert.assertEquals(expected, result);
     }
