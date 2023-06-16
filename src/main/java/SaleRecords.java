@@ -8,6 +8,8 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.*;
 
+// TODO Refactor methods to adhere to single-responsibility and other clean code principles
+
 public class SaleRecords {
 
     static List<Transaction> allTransactions = new ArrayList<>();
@@ -45,7 +47,7 @@ public class SaleRecords {
         }
         return allTransactions;
     }
-
+    // Question 1: Calculate the total revenue for the listed transactions
     public BigDecimal getTotalRevenue(List<Transaction> allTransactions) {
         BigDecimal totalRevenue = BigDecimal.ZERO;
         for (Transaction transaction : allTransactions) {
@@ -55,6 +57,7 @@ public class SaleRecords {
         return totalRevenue;
     }
 
+    // Question 2: Determine the most popular product overall based on quantities sold
     public String getMostPopularProduct(List<Transaction> allTransactions) {
         // Place product type and quantity sold for each product into a map, adding additional quantities to each value
         Map<String, Integer> productCountMap = new HashMap<>();
@@ -84,6 +87,7 @@ public class SaleRecords {
         return mostPopularProduct;
     }
 
+    // Question 3: Determine the average sale price of all products
     public BigDecimal getAveragePrice(List<Transaction> allTransactions) {
         // Assign each product and its price to key/value pairs in a map
         Map<String, BigDecimal> productsPriceMap = new HashMap<>();
@@ -104,6 +108,7 @@ public class SaleRecords {
         return averagePrice;
     }
 
+    // Question 4: Calculate the total number of each product sold
     public Map<String, Integer> getTotalProductsSoldByType(List<Transaction> allTransactions) {
         Map<String, Integer> totalProductsSold = new HashMap<>();
         for (Transaction transaction : allTransactions) {
@@ -115,6 +120,7 @@ public class SaleRecords {
         return totalProductsSold;
     }
 
+    // Question 5: Determine the date with the highest quantity of a product sold
     public LocalDate getDateOfHighestQuantitySalesOfAProduct(List<Transaction> allTransactions, String productType) {
         Map<LocalDate, Integer> dateAndQuantityMap = new HashMap<>();
         LocalDate date;
@@ -141,17 +147,7 @@ public class SaleRecords {
         return dateWithHighestQuantity;
     }
 
-    public Map<LocalDate, BigDecimal> createMapOfAllDatesAndRevenues(List<Transaction> allTransactions){
-        Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
-        BigDecimal revenue;
-        LocalDate date;
-        for (Transaction transaction : allTransactions) {
-            date = LocalDate.parse(transaction.getDate());
-            revenue = transaction.getRevenue();
-            dateAndRevenueMap.put(date, revenue);
-        }
-        return dateAndRevenueMap;
-    }
+    // Question 6: Determine the day of the week when the highest revenue was generated
     public DayOfWeek getDayOfWeekWithHighestRevenue(Map<LocalDate, BigDecimal> dateAndRevenueMap) {
         BigDecimal highestRevenue = BigDecimal.ZERO;
         BigDecimal currentRevenue;
@@ -167,7 +163,7 @@ public class SaleRecords {
         printer.printDayOfWeek(dayOfWeek);
         return dayOfWeek;
     }
-
+    // Question 7: Determine the total revenue generated within a specific time period
     public BigDecimal getRevenueByTimePeriod(List<Transaction> allTransactions, LocalDate startDate, LocalDate endDate) {
         LocalDate date;
         BigDecimal revenue = BigDecimal.ZERO;
@@ -190,18 +186,30 @@ public class SaleRecords {
 
     // TODO finish this method
 
-// Question 8: Find the average sale price for each day of the week.
+// Question 8: Find the average revenue for each day of the week.
     public Map<DayOfWeek, BigDecimal> getAverageRevenueForEachDayOfWeek(List<Transaction> allTransactions) {
-        LocalDate date;
-        BigDecimal revenue = BigDecimal.ZERO;
+        Map<LocalDate, BigDecimal> dateAndRevenueMap = createMapOfAllDatesAndRevenues(allTransactions);
+        DayOfWeek dayOfWeek = null;
+        Map<DayOfWeek, BigDecimal> dayOfWeekAndAverageRevenueMap = new HashMap<>();
+        for (Map.Entry<LocalDate, BigDecimal> entry : dateAndRevenueMap.entrySet()) {
+            LocalDate transactionDate = entry.getKey();
+            dayOfWeek = transactionDate.getDayOfWeek();
+            // add the value for each day of the week to the value for that dayOfWeek key
+            // keep track of count for each day of the week -- new map tracking days of week and count?
+            }
+        return dayOfWeekAndAverageRevenueMap;
+    }
+
+    public Map<LocalDate, BigDecimal> createMapOfAllDatesAndRevenues(List<Transaction> allTransactions){
         Map<LocalDate, BigDecimal> dateAndRevenueMap = new HashMap<>();
-        for (Transaction transaction: allTransactions) {
-            revenue = transaction.getRevenue();
+        BigDecimal revenue;
+        LocalDate date;
+        for (Transaction transaction : allTransactions) {
             date = LocalDate.parse(transaction.getDate());
+            revenue = transaction.getRevenue();
             dateAndRevenueMap.put(date, revenue);
         }
-
-        return null;
+        return dateAndRevenueMap;
     }
 
 }
